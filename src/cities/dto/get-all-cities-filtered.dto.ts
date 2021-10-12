@@ -1,13 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsEnum,
-  IsInt,
-  IsNumber,
-  IsNumberString,
-  IsOptional,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import {
   SearchSortByCitiesEnum,
   SearchSortByCities,
@@ -38,7 +30,7 @@ export class GetAllCitiesFilteredQuery {
   @IsEnum(SortOrder)
   @Type(() => Number)
   @IsOptional()
-  sortOrder?: number;
+  sortOrder?: -1 | 1;
 
   @IsEnum(SearchSortByCitiesEnum)
   @IsOptional()

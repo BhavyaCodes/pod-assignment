@@ -19,12 +19,29 @@ export class CitiesController {
   }
 
   @Get('/all-filtered')
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   getAllFiltered(
     @Query()
     query: GetAllCitiesFilteredQuery,
   ) {
+    const {
+      limit,
+      page,
+      sortBy,
+      sortOrder,
+      searchField,
+      minPopulation,
+      maxPopulation,
+    } = query;
     console.log(query);
-    // return this.citiesService.getAllFiltered();
+    return this.citiesService.getAllFiltered(
+      limit,
+      page,
+      sortBy,
+      sortOrder,
+      searchField,
+      minPopulation,
+      maxPopulation,
+    );
   }
 }

@@ -20,7 +20,7 @@ export class CitiesService {
     minPopulation: number,
     maxPopulation: number,
   ): Promise<any> {
-    if (minPopulation > maxPopulation) {
+    if (minPopulation && maxPopulation && minPopulation > maxPopulation) {
       throw new BadRequestException(
         "min population can't be more than max population",
       );
@@ -30,7 +30,12 @@ export class CitiesService {
 
     //get total docs
     const totalDocs = await this.cityModel.countDocuments({
-      pop: { $gte: minPopulation, $lte: maxPopulation },
+      ...((minPopulation || maxPopulation) && {
+        pop: {
+          ...(minPopulation && { $gte: minPopulation }),
+          ...(maxPopulation && { $lte: maxPopulation }),
+        },
+      }),
     });
     return { totalDocs };
   }
