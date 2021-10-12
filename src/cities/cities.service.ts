@@ -14,7 +14,7 @@ export class CitiesService {
   async getAllFiltered(
     limit = 10,
     page = 1,
-    sortBy?: SearchSortByCities,
+    sortBy: SearchSortByCities = 'city',
     sortOrder: -1 | 1 = 1,
     searchField: SearchSortByCities = 'city',
     searchValue?: string,
