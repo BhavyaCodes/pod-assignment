@@ -45,14 +45,19 @@ export class CitiesService {
     };
 
     //get total docs count for the filter
-    const totalDocs = await this.cityModel.countDocuments(filter);
+    const totalItemsAfterFilter = await this.cityModel.countDocuments(filter);
 
+    const info = {
+      totalItemsAfterFilter,
+      currentPage: page,
+      lastPage: Math.floor(totalItemsAfterFilter / limit) + 1,
+    };
     //get docs
     const cityDocs = await this.cityModel
       .find(filter)
       .limit(limit)
       .skip(skip)
       .sort({ [sortBy]: sortOrder });
-    return { totalDocs, cityDocs };
+    return { info, data: cityDocs };
   }
 }
