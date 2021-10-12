@@ -14,29 +14,45 @@ export class CitiesService {
   async getAllFiltered(
     limit = 10,
     page = 1,
-    sortBy: SearchSortByCities = 'city',
+    sortBy?: SearchSortByCities,
     sortOrder: -1 | 1 = 1,
     searchField: SearchSortByCities = 'city',
-    minPopulation: number,
-    maxPopulation: number,
+    searchValue?: string,
+    minPopulation?: number,
+    maxPopulation?: number,
   ): Promise<any> {
     if (minPopulation && maxPopulation && minPopulation > maxPopulation) {
       throw new BadRequestException(
         "min population can't be more than max population",
       );
     }
-    // return thi;
-    // limit = Math.max(1000, limit);
 
-    //get total docs
-    const totalDocs = await this.cityModel.countDocuments({
+    limit = Math.min(1000, limit);
+    const skip = (page - 1) * limit;
+
+    const filter = {
       ...((minPopulation || maxPopulation) && {
         pop: {
           ...(minPopulation && { $gte: minPopulation }),
           ...(maxPopulation && { $lte: maxPopulation }),
         },
       }),
-    });
-    return { totalDocs };
+      ...(searchValue && {
+        [searchField]: {
+          $eq: searchValue.toUpperCase(),
+        },
+      }),
+    };
+
+    //get total docs count for the filter
+    const totalDocs = await this.cityModel.countDocuments(filter);
+
+    //get docs
+    const cityDocs = await this.cityModel
+      .find(filter)
+      .limit(limit)
+      .skip(skip)
+      .sort({ [sortBy]: sortOrder });
+    return { totalDocs, cityDocs };
   }
 }

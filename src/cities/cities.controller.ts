@@ -30,16 +30,18 @@ export class CitiesController {
       sortBy,
       sortOrder,
       searchField,
+      searchValue,
       minPopulation,
       maxPopulation,
     } = query;
-    console.log(query);
+
     return this.citiesService.getAllFiltered(
       limit,
       page,
       sortBy,
       sortOrder,
       searchField,
+      searchValue,
       minPopulation,
       maxPopulation,
     );
