@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { City, CityDocument, CityFields } from './schema/city.schema';
+import { City, CityDocument, SearchSortByCities } from './schema/city.schema';
 
 @Injectable()
 export class CitiesService {
@@ -14,14 +14,19 @@ export class CitiesService {
   async getAllFiltered(
     limit = 10,
     page = 1,
-    sortBy: 'pop' | 'city' | 'state' = 'city',
+    sortBy: SearchSortByCities = 'city',
     sortOrder: -1 | 1 = 1,
-    searchField: CityFields = 'city',
+    searchField: SearchSortByCities = 'city',
     minPopulation: number,
     maxPopulation: number,
   ): Promise<any> {
+    if (minPopulation > maxPopulation) {
+      throw new BadRequestException(
+        "min population can't be more than max population",
+      );
+    }
     // return thi;
-    limit = Math.max(1000, limit);
+    // limit = Math.max(1000, limit);
 
     //get total docs
     const totalDocs = await this.cityModel.countDocuments({

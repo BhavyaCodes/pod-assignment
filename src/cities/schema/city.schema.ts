@@ -21,6 +21,12 @@ export class City {
   state: string;
 }
 
-export type CityFields = 'pop' | 'state' | 'city';
+export enum SearchSortByCitiesEnum {
+  city = 'city',
+  pop = 'pop',
+  state = 'state',
+}
+
+export type SearchSortByCities = 'city' | 'pop' | 'state';
 
 export const CitySchema = SchemaFactory.createForClass(City);
