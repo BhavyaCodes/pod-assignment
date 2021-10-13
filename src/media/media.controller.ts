@@ -37,7 +37,10 @@ export class MediaController {
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
-    console.log(file.path);
+    if (!file) {
+      return;
+    }
+    // console.log(file.path);
 
     const originalPath = join(__dirname, '..', '..', file.path);
     const mp4Path = join(__dirname, '..', '..', file.path + '.mp4');
@@ -58,24 +61,9 @@ export class MediaController {
         }
       });
     });
-    command.on('error', () => {
+    command.on('error', (error) => {
+      console.log(error);
       throw new InternalServerErrorException('Error when converting');
     });
   }
 }
-
-// @UseInterceptors(
-// 	FileInterceptor('file', {
-// 		fileFilter: (req: Request, file: Express.Multer.File, cb) => {
-// 			if (
-// 				file.mimetype === 'video/x-matroska' ||
-// 				file.mimetype === 'video/webm' ||
-// 				file.mimetype === 'video/x-m4v'
-// 			) {
-// 				cb(null, true);
-// 			} else {
-// 				cb(null, false);
-// 			}
-// 		},
-// 	}),
-// )

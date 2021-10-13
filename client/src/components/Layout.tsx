@@ -4,11 +4,10 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Container } from '@mui/material';
 import { useUser } from '../context/user.context';
 import { useHistory } from 'react-router';
+import { useRef } from 'react';
 
 export default function ButtonAppBar({
   children,
@@ -16,6 +15,7 @@ export default function ButtonAppBar({
   children: React.ReactNode;
 }) {
   const { user, loading, logout } = useUser();
+
   const history = useHistory();
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -26,7 +26,10 @@ export default function ButtonAppBar({
               <Button color="inherit" onClick={() => history.push('/cities')}>
                 cities
               </Button>
-              <Button color="inherit" onClick={() => history.push('/upload')}>
+              <Button
+                color="inherit"
+                onClick={() => history.push('/video-upload')}
+              >
                 Upload video
               </Button>
             </>
