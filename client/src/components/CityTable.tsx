@@ -9,6 +9,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { DisplayTable } from './Table';
 import { Box } from '@mui/system';
+import { useUser } from '../context/user.context';
+import { Button, Typography } from '@mui/material';
+import { useHistory } from 'react-router';
 
 export type ResponseData = {
   info: {
@@ -26,6 +29,8 @@ export type ResponseData = {
 };
 
 export default function CityTable() {
+  const history = useHistory();
+  const { user, token, logout } = useUser();
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [sortBy, setSortBy] = useState<SearchSortByCities>('city');
@@ -35,6 +40,9 @@ export default function CityTable() {
     undefined | SearchSortByCities
   >(undefined);
 
+  if (!user) {
+    history.push('/login');
+  }
   const [data, setData] = useState<null | ResponseData>(null);
   console.log(data);
 
@@ -58,8 +66,11 @@ export default function CityTable() {
           page,
           sortBy,
           sortOrder,
-          searchValue,
+          searchValue: searchValue || undefined,
           searchField,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => setData(res.data))
@@ -72,6 +83,8 @@ export default function CityTable() {
 
   return (
     <Box py={3}>
+      <Typography>{user?.username}</Typography>
+
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <FormControl fullWidth>
           <InputLabel id="select-sort-by-label">Sort By</InputLabel>
@@ -124,7 +137,7 @@ export default function CityTable() {
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </label>
-      {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
+
       <DisplayTable
         page={page}
         setPage={setPage}
@@ -136,6 +149,9 @@ export default function CityTable() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
       />
+      <Button type="button" onClick={logout}>
+        Logout
+      </Button>
     </Box>
   );
 }
