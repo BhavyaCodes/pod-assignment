@@ -15,9 +15,12 @@ export class UsersController {
   @Post('/signup')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async signup(@Body() body: SignupDto) {
-    console.log(body);
     const { username, password } = body;
     const user = await this.usersService.createUser(username, password);
-    console.log(user);
+
+    return {
+      message: 'signup successful',
+      username: user.username,
+    };
   }
 }

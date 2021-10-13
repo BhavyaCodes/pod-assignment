@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import {
   BadRequestException,
   Injectable,
@@ -6,7 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
-import bcrypt from 'bcrypt';
+// const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
@@ -20,8 +21,7 @@ export class UsersService {
       throw new BadRequestException(`${username} is already taken`);
     }
     try {
-      const hashedPassword = await bcrypt.hash(plainPassword, 8);
-      console.log(hashedPassword);
+      const hashedPassword = await hash(plainPassword, 8);
       const newUser = new this.userModel({
         username,
         password: hashedPassword,
