@@ -7,8 +7,6 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
-import { v4 as uuidv4 } from 'uuid';
-import * as multer from 'multer';
 
 @Controller('media')
 export class MediaController {
