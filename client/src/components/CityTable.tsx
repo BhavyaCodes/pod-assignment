@@ -16,6 +16,7 @@ export type ResponseData = {
     totalItemsAfterFilter: 29353;
   };
   data: {
+    _id: string;
     city: string;
     loc: [number, number];
     pop: number;

@@ -6,6 +6,9 @@ export type CityDocument = City & Document;
 @Schema()
 export class City {
   @Prop({ type: String })
+  _id: string;
+
+  @Prop({ type: String })
   city: string;
 
   @Prop({
