@@ -20,6 +20,14 @@ import { join } from 'path';
       // renderPath: '/upload',
       serveRoot: '/upload',
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client', 'build'),
+      exclude: ['/api*'],
+      // serveStaticOptions: {
+      //   // index: true,
+      //   extensions: ['html'],
+      // },
+    }),
     CitiesModule,
     AuthModule,
     UsersModule,
