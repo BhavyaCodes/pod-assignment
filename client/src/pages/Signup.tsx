@@ -9,12 +9,9 @@ export function Signup() {
 
   function handleFormSubmit(e: FormEvent) {
     e.preventDefault();
-    const username = usernameRef.current?.value;
-    const password = passwordRef.current?.value;
+    const username = usernameRef.current!.value;
+    const password = passwordRef.current!.value;
 
-    if (!username || !password) {
-      alert('error');
-    }
     console.log(username, password);
 
     axios
@@ -23,9 +20,7 @@ export function Signup() {
         password,
       })
       .then((res) => {
-        // console.log(data);
         setMessage(res.data?.message || null);
-        // console.log(res.data);
       })
       .catch((e: AxiosError<{ error: string; message: string[] }>) => {
         setMessage(e.response?.data.message[0] || null);

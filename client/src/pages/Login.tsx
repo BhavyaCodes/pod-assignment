@@ -1,20 +1,19 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import axios, { AxiosError } from 'axios';
 import { FormEvent, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
 
 export function Login() {
+  const history = useHistory();
   const usernameRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   function handleFormSubmit(e: FormEvent) {
     e.preventDefault();
-    const username = usernameRef.current?.value;
-    const password = passwordRef.current?.value;
+    const username = usernameRef.current!.value;
+    const password = passwordRef.current!.value;
 
-    // if (!username || !password) {
-    //   alert('error');
-    // }
     console.log(username, password);
 
     axios
@@ -23,12 +22,11 @@ export function Login() {
         password,
       })
       .then((res) => {
+        window.localStorage.setItem('token', res.data.access_token);
+        history.push('/cities');
         console.log(res.data);
-        // setMessage(res.data?.message || null);
-        // console.log(res.data);
       })
       .catch((e: AxiosError<{ message: string; statusCode: number }>) => {
-        // .catch((e: any) => {
         setMessage(e.response?.data.message || null);
         console.log(e.response);
       });
