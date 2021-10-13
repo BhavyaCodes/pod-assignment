@@ -2,7 +2,7 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import axios, { AxiosError } from 'axios';
 import { FormEvent, useRef, useState } from 'react';
 
-export function Signup() {
+export function Login() {
   const usernameRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -12,23 +12,24 @@ export function Signup() {
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
 
-    if (!username || !password) {
-      alert('error');
-    }
+    // if (!username || !password) {
+    //   alert('error');
+    // }
     console.log(username, password);
 
     axios
-      .post<{ message: string }>('/api/users/signup', {
+      .post<{ access_token: string }>('/api/auth/login', {
         username,
         password,
       })
       .then((res) => {
-        // console.log(data);
-        setMessage(res.data?.message || null);
+        console.log(res.data);
+        // setMessage(res.data?.message || null);
         // console.log(res.data);
       })
-      .catch((e: AxiosError<{ error: string; message: string[] }>) => {
-        setMessage(e.response?.data.message[0] || null);
+      .catch((e: AxiosError<{ message: string; statusCode: number }>) => {
+        // .catch((e: any) => {
+        setMessage(e.response?.data.message || null);
         console.log(e.response);
       });
   }
@@ -47,7 +48,7 @@ export function Signup() {
         onSubmit={handleFormSubmit}
       >
         <Typography variant="h3" gutterBottom>
-          Sign up
+          Login
         </Typography>
         <TextField
           required
@@ -64,7 +65,7 @@ export function Signup() {
           inputRef={passwordRef}
         />
         <Button type="submit" variant="contained">
-          SignUp
+          Login
         </Button>
         <Typography>{message}</Typography>
       </Box>
