@@ -40,6 +40,9 @@ export class MediaController {
     if (!file) {
       return;
     }
+    if (file.mimetype === 'video/mp4') {
+      return file;
+    }
     // console.log(file.path);
 
     const originalPath = join(__dirname, '..', '..', file.path);
