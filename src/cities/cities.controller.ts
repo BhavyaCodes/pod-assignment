@@ -2,13 +2,16 @@ import {
   Controller,
   Get,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CitiesService } from './cities.service';
 import { GetAllCitiesFilteredQuery } from './dto/get-all-cities-filtered.dto';
 import { City } from './schema/city.schema';
 
+@UseGuards(JwtAuthGuard)
 @Controller('cities')
 export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
