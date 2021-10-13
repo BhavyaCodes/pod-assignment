@@ -5,6 +5,7 @@ import {
   Post,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -13,7 +14,8 @@ import * as ffmpeg from 'fluent-ffmpeg';
 import * as fs from 'fs';
 import { join } from 'path';
 import { Response } from 'express';
-
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+@UseGuards(JwtAuthGuard)
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
