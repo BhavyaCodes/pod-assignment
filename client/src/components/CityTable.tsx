@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { DisplayTable } from './Table';
+import { Box } from '@mui/system';
 
 export type ResponseData = {
   info: {
@@ -45,6 +46,10 @@ export default function CityTable() {
     setSortOrder(Number(event.target.value) as 1 | -1);
   };
 
+  const handleChangeRowsPerPage = (e: SelectChangeEvent) => {
+    setLimit(Number(e.target.value));
+  };
+
   const fetchData = () => {
     axios
       .get<ResponseData>('/api/cities/all-filtered', {
@@ -66,30 +71,51 @@ export default function CityTable() {
   }, [limit, page, sortBy, sortOrder, searchValue, searchField]);
 
   return (
-    <div>
-      <InputLabel id="select-sort-by-label">Age</InputLabel>
-      <Select
-        labelId="select-sort-by-label"
-        id="select-sort-by"
-        value={sortBy}
-        label="sort By Field"
-        onChange={handleChangeSortBy}
-      >
-        <MenuItem value="city">city</MenuItem>
-        <MenuItem value="state">state</MenuItem>
-        <MenuItem value="pop">population</MenuItem>
-      </Select>
-      <InputLabel id="select-sort-order-label">Age</InputLabel>
-      <Select
-        labelId="select-sort-order-label"
-        id="select-sort-order"
-        value={sortOrder.toString()}
-        label="sort By Field"
-        onChange={handleChangeSortOrder}
-      >
-        <MenuItem value={1}>Asc</MenuItem>
-        <MenuItem value={-1}>Dsc</MenuItem>
-      </Select>
+    <Box py={3}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+        <FormControl fullWidth>
+          <InputLabel id="select-sort-by-label">Sort By</InputLabel>
+          <Select
+            labelId="select-sort-by-label"
+            id="select-sort-by"
+            value={sortBy}
+            label="sort By Field"
+            onChange={handleChangeSortBy}
+          >
+            <MenuItem value="city">city</MenuItem>
+            <MenuItem value="state">state</MenuItem>
+            <MenuItem value="pop">population</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="select-sort-order-label">Sort Order</InputLabel>
+          <Select
+            labelId="select-sort-order-label"
+            id="select-sort-order"
+            value={sortOrder.toString()}
+            label="sort By Field"
+            onChange={handleChangeSortOrder}
+          >
+            <MenuItem value={1}>Asc</MenuItem>
+            <MenuItem value={-1}>Dsc</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="select-rows-per-page-label">Rows Per page</InputLabel>
+          <Select
+            labelId="select-rows-per-page-label"
+            id="select-rows-per-page"
+            value={limit.toString()}
+            label="rows per page"
+            onChange={handleChangeRowsPerPage}
+          >
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+            <MenuItem value={100}>100</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <Box></Box>
 
       <label>
         search
@@ -110,6 +136,6 @@ export default function CityTable() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
       />
-    </div>
+    </Box>
   );
 }

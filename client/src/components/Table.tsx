@@ -17,7 +17,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import { ResponseData } from './CityTable';
 import { SearchSortByCities } from '../types';
 import { useEffect, useState } from 'react';
-import { Pagination, Stack } from '@mui/material';
+import { Pagination, Stack, TableHead } from '@mui/material';
 
 // interface TablePaginationActionsProps {
 //   count: number;
@@ -183,6 +183,13 @@ export function DisplayTable(props: DisplayTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+        <TableHead>
+          <TableRow>
+            <TableCell>City</TableCell>
+            <TableCell align="right">population</TableCell>
+            <TableCell align="right">state</TableCell>
+          </TableRow>
+        </TableHead>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row._id}>
