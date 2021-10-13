@@ -2,8 +2,10 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import axios, { AxiosError } from 'axios';
 import { FormEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
+import { useUser } from '../context/user.context';
 
 export function Login() {
+  const { setToken } = useUser();
   const history = useHistory();
   const usernameRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
@@ -22,8 +24,9 @@ export function Login() {
         password,
       })
       .then((res) => {
-        window.localStorage.setItem('token', res.data.access_token);
-        history.push('/cities');
+        // window.localStorage.setItem('token', res.data.access_token);
+        setToken(res.data.access_token);
+        history.push('/');
         console.log(res.data);
       })
       .catch((e: AxiosError<{ message: string; statusCode: number }>) => {

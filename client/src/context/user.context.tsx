@@ -21,22 +21,26 @@ const UserContext = createContext<{
   loading: boolean;
   logout: () => void;
   token: null | string;
+  setToken: Dispatch<SetStateAction<string | null>>;
 } | null>(null);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const history = useHistory();
-  const token = window.localStorage.getItem('token');
+  // const token = window.localStorage.getItem('token');
+  const [token, setToken] = useState<string | null>(
+    window.localStorage.getItem('token'),
+  );
   const [user, setUser] = useState<null | User>(null);
   if (!token) {
     <UserContext.Provider
-      value={{ user: null, setUser, loading: false, logout, token: null }}
+      value={{ user: null, setUser, loading: false, logout, token, setToken }}
     >
       {children}
     </UserContext.Provider>;
   }
   // const [user, setUser] = useLocalstorage<null | User>('token', null);
   const [loading, setLoading] = useState<boolean>(true);
-  const value = { user, setUser, loading, logout, token };
+  const value = { user, setUser, loading, logout, token, setToken };
 
   useEffect(() => {
     axios

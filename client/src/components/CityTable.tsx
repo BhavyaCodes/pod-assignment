@@ -30,7 +30,7 @@ export type ResponseData = {
 
 export default function CityTable() {
   const history = useHistory();
-  const { user, token, logout } = useUser();
+  const { user, token, logout, loading } = useUser();
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [sortBy, setSortBy] = useState<SearchSortByCities>('city');
@@ -40,9 +40,12 @@ export default function CityTable() {
     undefined | SearchSortByCities
   >(undefined);
 
-  if (!user) {
-    history.push('/login');
-  }
+  useEffect(() => {
+    if (!user && !loading) {
+      history.push('/login');
+    }
+  }, [user, loading, history]);
+
   const [data, setData] = useState<null | ResponseData>(null);
   console.log(data);
 
