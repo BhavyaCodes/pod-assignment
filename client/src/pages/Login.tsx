@@ -24,13 +24,17 @@ export function Login() {
         password,
       })
       .then((res) => {
-        // window.localStorage.setItem('token', res.data.access_token);
+        window.localStorage.setItem('token', res.data.access_token);
         setToken(res.data.access_token);
         history.push('/');
         console.log(res.data);
       })
       .catch((e: AxiosError<{ message: string; statusCode: number }>) => {
-        setMessage(e.response?.data.message || null);
+        setMessage(
+          (Array.isArray(e.response?.data.message)
+            ? e.response?.data.message[0]
+            : e.response?.data.message) || null,
+        );
         console.log(e.response);
       });
   }

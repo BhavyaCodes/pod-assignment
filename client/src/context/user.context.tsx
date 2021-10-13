@@ -63,6 +63,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   function logout() {
     window.localStorage.removeItem('token');
     history.push('/login');
+    setUser(null);
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

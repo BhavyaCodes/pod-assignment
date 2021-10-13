@@ -23,7 +23,11 @@ export function Signup() {
         setMessage(res.data?.message || null);
       })
       .catch((e: AxiosError<{ error: string; message: string[] }>) => {
-        setMessage(e.response?.data.message[0] || null);
+        setMessage(
+          (Array.isArray(e.response?.data.message)
+            ? e.response?.data.message[0]
+            : e.response?.data.message) || null,
+        );
         console.log(e.response);
       });
   }
