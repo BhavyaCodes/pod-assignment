@@ -32,4 +32,8 @@ export class UsersService {
       throw new InternalServerErrorException();
     }
   }
+
+  async findOne(username: string): Promise<User | null> {
+    return this.userModel.findOne({ username }).lean();
+  }
 }
